@@ -1,7 +1,7 @@
 const { Client, MessageMedia } = require('whatsapp-web.js')
 const qrcode = require('qrcode-terminal')
 const axios = require('axios')
-const client = new Client({})
+const client = new Client({ puppeteer: { headless: true,args: ['--no-sandbox', '--disable-setuid-sandbox']} })
 require('dotenv').config()
 
 client.on('qr', qr => {
