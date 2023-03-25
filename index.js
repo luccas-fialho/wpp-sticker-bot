@@ -1,7 +1,18 @@
-const { Client, MessageMedia } = require('whatsapp-web.js')
+const { Client, MessageMedia, LocalAuth } = require('whatsapp-web.js')
 const qrcode = require('qrcode-terminal')
 const axios = require('axios')
-const client = new Client({ puppeteer: { headless: true,args: ['--no-sandbox', '--disable-setuid-sandbox']} })
+const client = new Client({
+    puppeteer:
+    {
+        headless: true,
+        args:
+            [
+                '--no-sandbox',
+                '--disable-setuid-sandbox'
+            ]
+    },
+    authStrategy: new LocalAuth()
+})
 require('dotenv').config()
 
 client.on('qr', qr => {
@@ -9,7 +20,7 @@ client.on('qr', qr => {
 });
 
 client.on('ready', () => {
-    console.log('O Wpp-Sticker está pronto 😋 Não esquece da estrelinha no repo ⭐')
+    console.log('Online 😎')
 });
 
 /**
@@ -23,6 +34,7 @@ client.on('message_create', msg => {
     // Cola seu número onde tem o 84848484, sem o 9
     const sender = msg.from.includes(process.env.NUMBER) ? msg.to : msg.from
     if (command === ".sticker") generateSticker(msg, sender)
+    if (command === ".refri") msg.reply("TO CHEGANDO COM OS REFRI!!! 🏃‍♂️🏃‍♀️")
 });
 
 client.initialize();
@@ -32,7 +44,7 @@ const generateSticker = async (msg, sender) => {
         try {
             const { data } = await msg.downloadMedia()
             const image = await new MessageMedia("image/jpeg", data, "image.jpg")
-            msg.reply("Carregando...")
+            msg.reply("É pra já chefe!...")
             await client.sendMessage(sender, image, { sendMediaAsSticker: true, stickerName: "🤓", stickerAuthor: "Luccky @lucky.cas" })
         } catch (e) {
             msg.reply("❌ Erro ao processar imagem")
@@ -43,7 +55,7 @@ const generateSticker = async (msg, sender) => {
             const { data } = await axios.get(url, { responseType: 'arraybuffer' })
             const returnedB64 = Buffer.from(data).toString('base64');
             const image = await new MessageMedia("image/jpeg", returnedB64, "image.jpg")
-            msg.reply("Carregando...")
+            msg.reply("Calma ai....")
             await client.sendMessage(sender, image, { sendMediaAsSticker: true, stickerName: "🤓", stickerAuthor: "Luccky @lucky.cas" })
         } catch (e) {
             msg.reply("❌ Ih, deu ruim :xx")
