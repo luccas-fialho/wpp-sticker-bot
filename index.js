@@ -4,6 +4,7 @@ const axios = require('axios')
 const client = new Client({
     puppeteer:
     {
+        executablePath: "C:/Program Files/Google/Chrome/Application/chrome.exe",
         headless: true,
         args:
             [
@@ -11,7 +12,8 @@ const client = new Client({
                 '--disable-setuid-sandbox'
             ]
     },
-    authStrategy: new LocalAuth()
+    authStrategy: new LocalAuth(),
+    ffmpegPath: 'C:/ffmpeg/bin/ffmpeg.exe'
 })
 require('dotenv').config()
 
@@ -34,7 +36,7 @@ client.on('message_create', msg => {
     // Cola seu número onde tem o 84848484, sem o 9
     const sender = msg.from.includes(process.env.NUMBER) ? msg.to : msg.from
     if (command === ".sticker") generateSticker(msg, sender)
-    if (command === ".refri") msg.reply("TO CHEGANDO COM OS REFRI!!! 🏃‍♂️🏃‍♀️")
+    if (command === ".gab") msg.reply("TO CHEGANDO COM OS REFRI!!! 🏃‍♂️🏃‍♀️")
 });
 
 client.initialize();
@@ -48,6 +50,17 @@ const generateSticker = async (msg, sender) => {
             await client.sendMessage(sender, image, { sendMediaAsSticker: true, stickerName: "🤓", stickerAuthor: "Luccky @lucky.cas" })
         } catch (e) {
             msg.reply("❌ Erro ao processar imagem")
+        }
+    } else if (msg.type === "video") {
+        try {
+            const { data } = await msg.downloadMedia()
+            
+            const video = await new MessageMedia(`${msg._data.mimetype}`, data, "video.mp4")
+            msg.reply("Carregando sua obra prima...")
+            await client.sendMessage(sender, video, { sendMediaAsSticker: true, stickerName: "🤓", stickerAuthor: "Luccky @lucky.cas" })
+        } catch (e) {
+            msg.reply("❌ Erro ao processar video")
+            console.log('erro', e);
         }
     } else {
         try {
