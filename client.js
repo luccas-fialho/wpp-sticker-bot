@@ -9,11 +9,11 @@ const client = new Client({
   puppeteer: {
     executablePath:
       "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
-    /* headless: true,
+    headless: true,
         args: [
             '--no-sandbox',
             '--disable-setuid-sandbox'
-        ] */
+        ] 
   },
   authStrategy: new LocalAuth(),
   ffmpegPath: "D:/ffmpeg/bin/ffmpeg.exe",
