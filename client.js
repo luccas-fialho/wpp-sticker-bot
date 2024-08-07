@@ -8,7 +8,7 @@ const client = new Client({
   },
   puppeteer: {
     executablePath:
-      "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+      "/usr/bin/google-chrome",
     headless: true,
         args: [
             '--no-sandbox',
@@ -16,6 +16,6 @@ const client = new Client({
         ] 
   },
   authStrategy: new LocalAuth(),
-  ffmpegPath: "D:/ffmpeg/bin/ffmpeg.exe",
+  ffmpegPath: "/usr/bin/ffmpeg",
 });
 exports.client = client;
